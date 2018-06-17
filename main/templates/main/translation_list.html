@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <table class="table-striped">
+        <thead>
+        <tr>
+            <th> Key </th>
+            <th> English version </th>
+            <th> Spanish version </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for translation in translations %}
+       <tr>
+           <td> {{ translation.key }} </td>
+           <td> {{ translation.english_translation }} </td>
+           <td> {{ translation.spanish_translation }} </td>
+           <td> <a class="btn btn-default" href="{% url 'main:translation_edit' pk=translation.pk %}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+            <!--<td> <input type="text" class="form-control" name={{ key }} value={{ translation.spanish_translation }}> </td>-->
+       </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

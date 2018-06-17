@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<h1>Download translation</h1>
+<form action="{% url 'main:download_json' %}" method="GET" enctype="multipart/form-data" class="form-horizontal">
+{% csrf_token %}
+<div class="form-group">
+    <div style="margin-left:15px;">
+         <button class="btn btn-primary"> <span class="glyphicon glyphicon-download" style="margin-right:5px;"></span>Download ES JSON </button>
+    </div>
+</div>
+</form>
+{% endblock %}
