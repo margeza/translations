@@ -6,7 +6,7 @@ class Translation(models.Model):
     key = models.CharField(max_length=200)
     english_translation = models.TextField()
     spanish_translation = models.TextField()
-    status = models.BooleanField()
+    status = models.BooleanField(verbose_name="Corrected")
 
     def __str__(self):
         return self.key

@@ -1,0 +1,5 @@
+Django==1.11.13
+django-bootstrap3==10.0.1
+django-filter==1.1.0
+django-tables2==1.21.2
+pytz==2018.4

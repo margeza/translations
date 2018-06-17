@@ -2,7 +2,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.translation_list, name='translation_list'),
+    url(r'^$', views.FilteredTranslationListView.as_view(), name='translation_list'),
     url(r'^upload_files/$', views.upload_files, name='upload_files'),
     url(r'^upload/json_en/$', views.upload_json_en, name='upload_json_en'),
     url(r'^upload/json_es/$', views.upload_json_es, name='upload_json_es'),
