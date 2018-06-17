@@ -1,4 +1,6 @@
 import logging
+from difflib import SequenceMatcher
+from multiprocessing import Process
 
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
@@ -9,6 +11,7 @@ from django_tables2 import RequestConfig, SingleTableMixin
 
 from main.filters import TranslationFilter
 from main.forms import TranslationForm
+from main.json_converter import load_en_json, load_es_json
 from main.tables import TranslationTable
 from .models import Translation
 import json
@@ -30,26 +33,14 @@ def upload_json_en(request):
         if not json_file.name.lower().endswith('.json'):
             messages.error(request, 'File is not JSON type')
             return HttpResponseRedirect(reverse("main:upload_json_en"))
-        # if file is too large, return
-        if json_file.multiple_chunks():
-            messages.error(request, "Uploaded file is too big (%.2f MB)." % (json_file.size / (1000 * 1000),))
-            return HttpResponseRedirect(reverse("main:upload_json_en"))
 
-        Translation.objects.all().delete()
-
-        english_version = json.load(json_file)
-
-        for key in english_version:
-            Translation.objects.create(key=key,
-                                       english_translation=english_version[key],
-                                       spanish_translation="",
-                                       status=False)
+        load_en_json(json_file)
 
     except Exception as e:
         logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
         messages.error(request, "Unable to upload file. " + repr(e))
 
-    return HttpResponseRedirect(reverse("main:upload_json_en"))
+    return HttpResponseRedirect(reverse("main:translation_list"))
 
 def upload_json_es(request):
     data = {}
@@ -61,22 +52,15 @@ def upload_json_es(request):
         if not json_file.name.lower().endswith('.json'):
             messages.error(request, 'File is not JSON type')
             return HttpResponseRedirect(reverse("main:upload_json_es"))
-        # if file is too large, return
-        if json_file.multiple_chunks():
-            messages.error(request, "Uploaded file is too big (%.2f MB)." % (json_file.size / (1000 * 1000),))
-            return HttpResponseRedirect(reverse("main:upload_json_es"))
 
-        spanish_version = json.load(json_file)
-
-        for key, value in spanish_version.items():
-            english_translation = Translation.objects.get(key=key).english_translation
-            status = (value != english_translation and value != "")
-            Translation.objects.filter(key=key).update(spanish_translation=value, status=status)
+        load_es_json(json_file)
     except Exception as e:
         logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
         messages.error(request, "Unable to upload file. " + repr(e))
 
-    return HttpResponseRedirect(reverse("main:upload_json_es"))
+    return HttpResponseRedirect(reverse("main:translation_list"))
+
+
 
 def translation_edit(request, pk):
     translation = get_object_or_404(Translation, pk=pk)

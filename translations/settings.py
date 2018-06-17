@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'bootstrap3',
     'django_filters',
+    'background_task',
 ]
 
 MIDDLEWARE = [

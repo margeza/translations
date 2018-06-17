@@ -10,6 +10,8 @@
             {% bootstrap_button 'Filter' %}
         </form>
     {% endif %}
-    {% render_table table %}
+    {% if table %}
+            {% render_table table %}
+    {% endif %}
 </div>
 {% endblock %}
