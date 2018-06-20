@@ -9,6 +9,4 @@ urlpatterns = [
     url(r'^translation/(?P<pk>\d+)/edit/$', views.translation_edit, name='translation_edit'),
     url(r'^download_files/$', views.download_files, name='download_files'),
     url(r'^download/json_es/$', views.download_json, name='download_json'),
-    url(r'^upload/json_en/get_progress/$', views.get_progress, name="get_progress"),
-    url(r'^upload/json_es/get_progress/$', views.get_progress, name="get_progress"),
 ]
